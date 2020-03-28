@@ -8,7 +8,7 @@ pwr = []
 if (not os.environ.get('PYTHONHTTPSVERIFY', '') and
         getattr(ssl, '_create_unverified_context', None)):
         ssl._create_default_https_context = ssl._create_unverified_context
-serviceInstance = SmartConnect(host="172.16.1.11",user="user",pwd="pwd")
+serviceInstance = SmartConnect(host="host",user="user",pwd="pwd")
 content = serviceInstance.RetrieveContent()
 vm_view = content.viewManager.CreateContainerView(content.rootFolder,[vim.VirtualMachine],True)
 
