@@ -3,6 +3,7 @@ from pyVmomi import vim
 import re
 import os
 import ssl
+import time
 arr = []
 pwr = []
 if (not os.environ.get('PYTHONHTTPSVERIFY', '') and
