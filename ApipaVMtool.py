@@ -1,3 +1,6 @@
+#This script will check for APIPA addresses for all virtual machines in a host, apipa Addresses are usually assigned when a VM fails to obtain a valid IP.
+#@Author: Carlos Avalos
+
 from pyVim.connect import SmartConnect
 from pyVmomi import vim
 import re
