@@ -1,0 +1,46 @@
+from pyVim.connect import SmartConnect
+from pyVmomi import vim
+import re
+import os
+import ssl
+import time
+import datetime
+answers = {}
+if (not os.environ.get('PYTHONHTTPSVERIFY', '') and
+        getattr(ssl, '_create_unverified_context', None)):
+        ssl._create_default_https_context = ssl._create_unverified_context
+serviceInstance = SmartConnect(host="172.16.1.11",user="SJC\Cavalos",pwd="Ju$t4@@ci")
+content = serviceInstance.RetrieveContent()
+vm_view = content.viewManager.CreateContainerView(content.rootFolder,[vim.VirtualMachine],True)
+
+def get_all_objs(content, vimtype):
+        obj = {}
+        container = content.viewManager.CreateContainerView(content.rootFolder, vimtype, True)
+        for managed_object_ref in container.view:
+                obj.update({managed_object_ref: managed_object_ref.name})
+        return obj
+
+
+    
+vmToScan = [vm for vm in get_all_objs(content,[vim.VirtualMachine]) if "nameOfVM" == vm.name]
+
+try:
+    while True:
+        for vms in vmToScan:
+            if(vms.runtime.powerState != vim.VirtualMachinePowerState.poweredOn):
+                print(vms + " " + " Faulted at" ,datetime.datetime.now())
+                task = vms.PowerOn()
+                while task.info.state not in [vim.TaskInfo.State.success,
+                                  vim.TaskInfo.State.error]:
+                    if vms.runtime.question is not None:
+                        question_id = vms.runtime.question.id
+                        if question_id not in answers.keys():
+                            answers[question_id] = answer_vm_question(vms)
+                            vms.AnswerVM(question_id, answers[question_id])
+            elif(vms.runtime.powerState == vim.VirtualMachinePowerState.poweredOn):
+                print(vms.name + " " + "Is up and running")
+        time.sleep(600)
+except KeyboardInterrupt:
+    print('Manual break by user')
+        
+    
