@@ -29,10 +29,10 @@ def Upload(fileName, bucketTwo):
 
 
 
-def download(bucketOne,defaultName):
+def download(bucketOne):
     for keys in bucketOne.objects.all():
-			bucketOne.download_file(keys.key, defaultName)
       placeFiles = sys.path[0]+"\\"+"unzipped"
+      bucketOne.download_file(keys.key, placeFiles)
       #zip = ZipFile(sys.path[0]+"\\"+defaultName,'r')
       #zip.extractall(placeFiles)
       #zip.close() Uncomment if files are zipped
@@ -53,5 +53,5 @@ bucketOne = s3.Bucket('')#Bucket One
 bucketTwo = s3.Bucket('') #Bucket Two            
             
 
-download(bucketOne,defaultName)
+download(bucketOne)
 Upload(defaultName,bucketTwo)
