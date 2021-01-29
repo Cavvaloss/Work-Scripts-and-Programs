@@ -1,6 +1,5 @@
 #Script that monitors standardized Intel Adapter. It will restart if it notices connection drop. It will shutdown if there is hardware issue(Ex: Ethernet being unplugged, or network card dead).
-#Written to avoid walking to terminal A and manually restarting, allowing us to be more efficient.
-# By @Carlos Avalos
+# @Author Carlos Avalos
 Function Start-Monitoring
 {
 
